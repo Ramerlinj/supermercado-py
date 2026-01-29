@@ -1,0 +1,28 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-dark: #f7f9f4;
+    /* Blanco cálido / fondo limpio */
+    --text-light: #1f2937;
+    /* Gris oscuro suave (no negro puro) */
+    --text-muted: #6b7280;
+    /* Gris medio, lectura cómoda */
+    --primary: #4caf50;
+    /* Verde fresco tipo orgánico */
+    --border-dark: #e5e7eb;
+    /* Gris claro para bordes sutiles */
+    --max-width: 1120px;
+
+}
+
+
+body {
+    font-family: system-ui, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    overflow-x: hidden;
+}

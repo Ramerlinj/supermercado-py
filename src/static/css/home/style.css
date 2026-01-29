@@ -1,0 +1,19 @@
+:root{
+    --bg-dark: #111A22,
+    --text-light: #fff
+    --text-muted: #d1d1d1
+    --primary: #052F9C,
+    --border-dark: #1e29eb
+}
+
+body{
+    font-size: 16px;
+}
+
+.navbar{
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background-color: var(--bg-dark);
+    border-bottom: 10px solid var(--bg-dark);
+}

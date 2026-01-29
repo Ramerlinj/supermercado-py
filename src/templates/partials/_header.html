@@ -1,22 +1,29 @@
 <head>
   <link rel="stylesheet" href="../../static/css/partials/header.css" />
 </head>
-<header>
+<header class="header">
   <nav class="navbar">
-        <div class="navbar-container">
-            <div class="navbar-logo">
-                <span>SuperMarket</span
-            </div>
-            <div class="navbar-menu">
-                <div class="navbar-links">
-                    <a href="/">Inicio</a>
-                    <a href="/products">Productos</a>
-                    <a href="">Ofertas</a>
-                    <a href="">Nosotros</a>
-                    <a href="">Sugerencias</a>
-                </div>
-                <button class="btn-primary">Inicia Sesión</button>
-            </div>`
-        </div>
-    </nav>
+    <div class="navbar-container">
+      
+      <div class="navbar-logo">
+        <img src="../../static/img/logo-supermarket.svg" alt="" />
+      </div>
+
+      <div class="navbar-links">
+        <a href="/">Inicio</a>
+        <a href="/products">Productos</a>
+        <a href="">Ofertas</a>
+        <a href="">Nosotros</a>
+        <a href="">Sugerencias</a>
+      </div>
+      
+      <div class="navbar-actions">
+        <button class="btn-primary">
+          <img src="{{ url_for('static', filename='img/user-icon.svg') }}" alt="User Icon">
+          Login
+        </button>
+      </div>
+
+    </div>
+  </nav>
 </header>

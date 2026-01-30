@@ -1,19 +1,20 @@
-:root{
-    --bg-dark: #111A22,
-    --text-light: #fff
-    --text-muted: #d1d1d1
-    --primary: #052F9C,
-    --border-dark: #1e29eb
+.content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem 0;
 }
 
-body{
-    font-size: 16px;
+.image-container{
+    width: 100%;;
 }
 
-.navbar{
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background-color: var(--bg-dark);
-    border-bottom: 10px solid var(--bg-dark);
+.image-container img{
+    width: 100% ;
+    height: 400px ;
+    object-fit: cover;
+}
+
+.category > span{
+    font-size: 2rem;
 }

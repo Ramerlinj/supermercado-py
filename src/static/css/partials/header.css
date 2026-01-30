@@ -10,7 +10,7 @@
 
 .navbar {
     border-bottom: 1px solid var(--border-dark);
-    margin: 0 10px;
+    margin: 0 50px;
 }
 
 .navbar-container {
@@ -31,6 +31,12 @@
 .navbar-logo img {
     width: 40px;
     height: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.navbar-logo img:hover {
+    transform: scale(1.05);
 }
 
 .navbar-logo h2 {
@@ -62,7 +68,7 @@
     content: "";
     position: absolute;
     left: 0;
-    bottom: -1px;
+    bottom: -2px;
     width: 0;
     height: 2px;
     border-radius: 1px;
@@ -80,7 +86,9 @@
 
 .btn-primary {
     color: var(--text-light);
+    background-color: transparent;
     border: none;
+    box-shadow: 2px 2px 8px rgba(76, 175, 80, 0.2);
     padding: 0.5rem 1.2rem;
     border-radius: 0.5rem;
     font-size: 0.85rem;

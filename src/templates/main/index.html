@@ -1,7 +1,12 @@
 {% extends 'layout/base.html' %}
 
+{% block head %}
+<link rel="stylesheet" href="../../static/css/home/style.css" />
+{% endblock %}
+
 {% block title %} Home {% endblock %}
 
 {% block content %}
-<p>hola buenas brous</p>
+{% include "main/_components/hero.html" %}
+
 {% endblock %}

@@ -19,6 +19,10 @@
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
       rel="stylesheet"
     />
+
+    {% from 'macros/ui/badge.html' import ui_styles %}
+    {{ ui_styles() }}
+
     {% block head %}{% endblock %}
     <!-- <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"

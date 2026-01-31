@@ -1,0 +1,52 @@
+{% macro ui_styles() %}
+<style>
+  /* Badge Component */
+  .badge {
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    display: inline-block;
+  }
+  .badge-fruta {
+    background-color: #b5caba;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  .badge-carne {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+  .badge-lacteo {
+    background-color: #cce5ff;
+    color: #004085;
+  }
+
+  /* Agrega estos a los que ya tenías */
+  .badge-verduras {
+    background-color: #d1e7dd;
+    color: #0f5132;
+  }
+  .badge-panadería {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+  .badge-congelados {
+    background-color: #cff4fc;
+    color: #055160;
+  }
+  .badge-oferta {
+    background-color: #ff5050;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+  }
+
+
+
+  
+  /* Aquí puedes agregar más CSS de otros componentes UI futuros */
+</style>
+{% endmacro %} {% macro badge(texto, categoria) %}
+<span class="badge badge-{{ categoria|lower }}"> {{ texto }} </span>
+{% endmacro %}

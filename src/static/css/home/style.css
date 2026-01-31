@@ -15,14 +15,15 @@
     object-fit: cover;
 }
 
+
 .category > span{
     font-size: 2rem;
 }
 
 .category-wrapper{
     display: flex;
-    gap: 8px;
-    margin: 0 10px;
+    gap: 16px;
+    margin: 4px 30px;
 }
 
 .sub_category{
@@ -32,20 +33,25 @@
 }
 
 .category_text{
-   margin: 4px;
+   margin: 8px 30px;
 }
 
 .circle_category{
     border-radius: 100%;
-    width: 44px;
-    height: 44px;
-    padding: 0 2px;
+    width: 56px;
+    height: 56px;
+    padding: 0 4px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row;
     background-color: #DFF7E9;
     color: #13EC6D;
+}
+
+.sub_category > span{
+    font-size: 0.8rem;
+    font-weight: 500;
 }
 
 

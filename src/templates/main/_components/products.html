@@ -1,0 +1,42 @@
+{% from 'macros/ui/badge.html' import badge %}
+
+<section class="products">
+  <div class="products-details">
+    <h2>Más Vendidos</h2>
+    <span>Productos frescos y de alta calidad</span>
+  </div>
+  <div class="products-viewmore">
+    <a href="/products">Ver más -></a>
+  </div>
+
+  <div class="products-list">
+    {% for product in products.Products[:6] %}
+    <div class="products-items">
+      <div class="badge-category">
+        {{ badge(product.category, product.category) }}
+      </div>
+      <div class="badge-offer">
+        {% if product.is_on_offer %} {{ badge('Oferta', 'oferta') }} {% endif %}
+      </div>
+      <div class="products-image">
+        <img src="{{ product.image_url }}" alt="{{ product.name }}" />
+      </div>
+      <h3>{{ product.name }}</h3>
+      <p>{{ product.cantity }}</p>
+      <div class="add-to-cart-container">
+        {% if product.is_on_offer%}
+        <p class="price">${{ product.offer_price }}</p>
+        {% endif %}
+        {% if not product.is_on_offer %}
+        <p class="price">${{ product.price }}</p>
+        {% endif %}
+        <button class="add-to-cart">+</button>
+      </div>
+      {% if product.is_on_offer%}
+      <p class="price--offer">${{ product.price }}</p>
+      {% endif %}
+    </div>
+
+    {% endfor %}
+  </div>
+</section>

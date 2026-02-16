@@ -99,13 +99,11 @@
 .auth-captcha__box {
     height: 60px;
     border-radius: 8px;
-    background: repeating-linear-gradient(
-        135deg,
-        rgba(31, 41, 55, 0.08),
-        rgba(31, 41, 55, 0.08) 8px,
-        rgba(31, 41, 55, 0.02) 8px,
-        rgba(31, 41, 55, 0.02) 16px
-    );
+    background: repeating-linear-gradient(135deg,
+            rgba(31, 41, 55, 0.08),
+            rgba(31, 41, 55, 0.08) 8px,
+            rgba(31, 41, 55, 0.02) 8px,
+            rgba(31, 41, 55, 0.02) 16px);
     display: flex;
     align-items: center;
     justify-content: center;

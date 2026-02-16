@@ -1,13 +1,7 @@
-{% extends 'layout/base.html' %}
-
-{% block head %}
+{% extends 'layout/base.html' %} {% block head %}
 <link rel="stylesheet" href="../../static/css/auth/auth.css" />
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-{% endblock %}
-
-{% block title %} Registro {% endblock %}
-
-{% block content %}
+{% endblock %} {% block title %} Registro {% endblock %} {% block content %}
 <section class="auth">
   <div class="auth-card">
     <div class="auth-header">
@@ -45,7 +39,10 @@
           required
         />
       </div>
-      <div class="g-recaptcha" data-sitekey="6Lfz8WwsAAAAAIBbHhAMEUMAqaef7vsScfuIV_0j"></div>
+      <div
+        class="g-recaptcha"
+        data-sitekey="6Lfz8WwsAAAAAIBbHhAMEUMAqaef7vsScfuIV_0j"
+      ></div>
       <p class="auth-hint">Verifica que no eres un bot.</p>
       <button class="auth-submit" type="submit">Crear cuenta</button>
     </form>

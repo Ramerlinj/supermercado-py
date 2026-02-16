@@ -4,7 +4,6 @@
 <header class="header">
   <nav class="navbar">
     <div class="navbar-container">
-      
       <div class="navbar-logo">
         <img src="../../static/img/logo-supermarket.svg" alt="" />
       </div>
@@ -16,14 +15,16 @@
         <a href="">Nosotros</a>
         <a href="">Contacto</a>
       </div>
-      
+
       <div class="navbar-actions">
         <a class="btn-primary" href="/login">
-          <img src="{{ url_for('static', filename='img/user-icon.svg') }}" alt="User Icon">
+          <img
+            src="{{ url_for('static', filename='img/user-icon.svg') }}"
+            alt="User Icon"
+          />
           Login
         </a>
       </div>
-
     </div>
   </nav>
 </header>

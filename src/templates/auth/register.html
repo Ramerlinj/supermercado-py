@@ -1,0 +1,59 @@
+{% extends 'layout/base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="../../static/css/auth/auth.css" />
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}
+
+{% block title %} Registro {% endblock %}
+
+{% block content %}
+<section class="auth">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h2>Crear cuenta</h2>
+      <p>Completa tus datos para registrarte</p>
+    </div>
+
+    <form class="auth-form" method="post" action="#">
+      <div class="auth-row">
+        <div class="auth-field">
+          <label for="register-name">Nombre</label>
+          <input
+            id="register-name"
+            type="text"
+            placeholder="Tu nombre"
+            required
+          />
+        </div>
+        <div class="auth-field">
+          <label for="register-lastname">Apellido</label>
+          <input
+            id="register-lastname"
+            type="text"
+            placeholder="Tu apellido"
+            required
+          />
+        </div>
+      </div>
+      <div class="auth-field">
+        <label for="register-password">Contrasena</label>
+        <input
+          id="register-password"
+          type="password"
+          placeholder="Crea una contrasena"
+          required
+        />
+      </div>
+      <div class="g-recaptcha" data-sitekey="6Lfz8WwsAAAAAIBbHhAMEUMAqaef7vsScfuIV_0j"></div>
+      <p class="auth-hint">Verifica que no eres un bot.</p>
+      <button class="auth-submit" type="submit">Crear cuenta</button>
+    </form>
+
+    <div class="auth-footer">
+      <span>Ya tienes cuenta?</span>
+      <a href="/login">Inicia sesion</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

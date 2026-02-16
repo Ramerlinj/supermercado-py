@@ -1,0 +1,94 @@
+{% extends 'layout/base.html' %} {% block head %}
+<link rel="stylesheet" href="../../static/css/home/products.css" />
+<link rel="stylesheet" href="../../static/css/menu/products.css" />
+{% endblock %} {% block title %} Productos {% endblock %} {% block content %} {%
+from 'macros/ui/badge.html' import badge %}
+
+<section class="products products--page">
+  <div class="products-details">
+    <h2>Productos</h2>
+    <span>Explora nuestro catalogo completo</span>
+  </div>
+
+  <div class="products-filters products-filters--compact" data-products-filters>
+    <div class="products-filters__group products-filters__group--search">
+      <label for="filter-search">Buscar</label>
+      <input
+        id="filter-search"
+        type="search"
+        placeholder="Nombre del producto"
+        data-filter="search"
+      />
+    </div>
+    <div class="products-filters__group">
+      <label>Precio</label>
+      <div class="products-filters__range">
+        <input
+          id="filter-price-min"
+          type="number"
+          min="0"
+          step="1"
+          placeholder="Min"
+          data-filter="price-min"
+        />
+        <input
+          id="filter-price-max"
+          type="number"
+          min="0"
+          step="1"
+          placeholder="Max"
+          data-filter="price-max"
+        />
+      </div>
+    </div>
+    <div class="products-filters__group products-filters__group--toggle">
+      <label class="products-filters__toggle">
+        <input id="filter-offer" type="checkbox" data-filter="offer" />
+        <span>Solo ofertas</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="products-results" data-products-count>
+    Mostrando {{ products.Products | length }} productos
+  </div>
+
+  <div class="products-list" data-products-list>
+    {% for product in products.Products %}
+    <div
+      class="products-items"
+      data-product-item
+      data-name="{{ product.name }}"
+      data-category="{{ product.category }}"
+      data-offer="{{ 'on' if product.is_on_offer else 'off' }}"
+      data-price="{{ product.offer_price if product.is_on_offer else product.price }}"
+      data-search="{{ product.name | lower }}"
+    >
+      <div class="badge-category">
+        {{ badge(product.category, product.category) }}
+      </div>
+      <div class="badge-offer">
+        {% if product.is_on_offer %} {{ badge('Oferta', 'oferta') }} {% endif %}
+      </div>
+      <div class="products-image">
+        <img src="{{ product.image_url }}" alt="{{ product.name }}" />
+      </div>
+      <h3>{{ product.name }}</h3>
+      <p>{{ product.cantity }}</p>
+      <div class="add-to-cart-container">
+        {% if product.is_on_offer%}
+        <p class="price">${{ product.offer_price }}</p>
+        {% endif %} {% if not product.is_on_offer %}
+        <p class="price">${{ product.price }}</p>
+        {% endif %}
+        <button class="add-to-cart">+</button>
+      </div>
+      {% if product.is_on_offer%}
+      <p class="price--offer">${{ product.price }}</p>
+      {% endif %}
+    </div>
+
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

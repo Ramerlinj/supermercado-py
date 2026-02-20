@@ -1,0 +1,41 @@
+{% extends 'layout/base.html' %} {% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/admin/admin.css') }}"
+/>
+{% endblock %} {% block title %} Admin Usuarios {% endblock %} {% block content
+%}
+<section class="admin">
+  <div class="admin-header">
+    <div>
+      <h2>Usuarios</h2>
+      <p>Gestiona clientes y administradores.</p>
+    </div>
+    <a class="btn-solid" href="/admin/users/new">Nuevo usuario</a>
+  </div>
+
+  <div class="admin-table">
+    <div class="admin-table__row admin-table__row--head">
+      <span>Nombre</span>
+      <span>Email</span>
+      <span>Rol</span>
+      <span>Estado</span>
+      <span>Acciones</span>
+    </div>
+    {% for user in users %}
+    <div class="admin-table__row">
+      <span>{{ user.full_name or '-' }}</span>
+      <span>{{ user.email }}</span>
+      <span>{{ 'Admin' if user.is_admin else 'Cliente' }}</span>
+      <span>{{ 'Activo' if user.is_active else 'Inactivo' }}</span>
+      <span class="admin-actions">
+        <a class="admin-link" href="/admin/users/{{ user.id }}/edit">Editar</a>
+        <form method="post" action="/admin/users/{{ user.id }}/delete">
+          <button type="submit" class="admin-danger">Eliminar</button>
+        </form>
+      </span>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

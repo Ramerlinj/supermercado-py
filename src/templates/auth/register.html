@@ -9,14 +9,22 @@
       <p>Completa tus datos para registrarte</p>
     </div>
 
-    <form class="auth-form" method="post" action="#">
+    {% if error %}
+    <p class="auth-error">{{ error }}</p>
+    {% endif %}
+    <form class="auth-form" method="post" action="/register" data-auth-form>
       <div class="auth-row">
         <div class="auth-field">
           <label for="register-name">Nombre</label>
           <input
             id="register-name"
             type="text"
+            name="first_name"
+            value="{{ first_name or '' }}"
             placeholder="Tu nombre"
+            autocomplete="given-name"
+            minlength="2"
+            pattern="[A-Za-z\u00C0-\u017F\s'-]+"
             required
           />
         </div>
@@ -25,17 +33,38 @@
           <input
             id="register-lastname"
             type="text"
+            name="last_name"
+            value="{{ last_name or '' }}"
             placeholder="Tu apellido"
+            autocomplete="family-name"
+            minlength="2"
+            pattern="[A-Za-z\u00C0-\u017F\s'-]+"
             required
           />
         </div>
+      </div>
+      <div class="auth-field">
+        <label for="register-email">Email</label>
+        <input
+          id="register-email"
+          type="email"
+          name="email"
+          value="{{ email or '' }}"
+          placeholder="tu@email.com"
+          autocomplete="email"
+          required
+        />
       </div>
       <div class="auth-field">
         <label for="register-password">Contrasena</label>
         <input
           id="register-password"
           type="password"
+          name="password"
           placeholder="Crea una contrasena"
+          autocomplete="new-password"
+          minlength="6"
+          data-password
           required
         />
       </div>

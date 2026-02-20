@@ -5,7 +5,7 @@ import re
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from flask import Flask, render_template, request, redirect, url_for, session
-from middleware.admin import build_admin_required, get_admin_role_id, is_admin
+from middleware.admin import build_admin_required, get_admin_role_id, is_admin as is_admin_user
 from dotenv import load_dotenv
 from decimal import Decimal
 # from livereload import Server
@@ -170,7 +170,7 @@ def inject_globals():
     is_admin = False
     user_id = session.get('user_id')
     if user_id:
-        is_admin = is_admin(user_id, get_db_connection)
+        is_admin = is_admin_user(user_id, get_db_connection)
         session['is_admin'] = is_admin
     return {
         'cart_count': cart_count,

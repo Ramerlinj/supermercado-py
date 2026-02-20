@@ -1,0 +1,29 @@
+{% extends 'layout/base.html' %} {% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/admin/admin.css') }}"
+/>
+{% endblock %} {% block title %} Admin {% endblock %} {% block content %}
+<section class="admin">
+  <div class="admin-hero">
+    <h2>Panel de administracion</h2>
+    <p>Gestiona productos y usuarios del supermercado.</p>
+  </div>
+  <div class="admin-grid">
+    <a class="admin-card" href="/admin/products">
+      <span class="material-symbols-outlined">inventory_2</span>
+      <div>
+        <h3>Productos</h3>
+        <p>Crear, editar y organizar el catalogo.</p>
+      </div>
+    </a>
+    <a class="admin-card" href="/admin/users">
+      <span class="material-symbols-outlined">group</span>
+      <div>
+        <h3>Usuarios</h3>
+        <p>Administrar clientes y permisos.</p>
+      </div>
+    </a>
+  </div>
+</section>
+{% endblock %}

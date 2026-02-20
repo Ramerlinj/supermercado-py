@@ -1,0 +1,130 @@
+{% extends 'layout/base.html' %} {% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/admin/admin.css') }}"
+/>
+{% endblock %} {% block title %} Admin Producto {% endblock %} {% block content
+%}
+<section class="admin">
+  <div class="admin-header">
+    <div>
+      <h2>{{ 'Editar producto' if product else 'Nuevo producto' }}</h2>
+      <p>Completa los datos del producto.</p>
+    </div>
+    <div class="admin-actions">
+      <a class="btn-link" href="/admin">Volver al admin</a>
+      <a class="btn-link" href="/admin/products">Retroceder</a>
+    </div>
+  </div>
+
+  {% if error %}
+  <p class="admin-error">{{ error }}</p>
+  {% endif %}
+
+  <form class="admin-form" method="post">
+    <div class="admin-field">
+      <label>Nombre</label>
+      <input
+        type="text"
+        name="name"
+        value="{{ product.name if product else '' }}"
+        required
+      />
+    </div>
+    <div class="admin-field">
+      <label>Descripcion</label>
+      <textarea name="description" rows="3">
+{{ product.description if product else '' }}</textarea
+      >
+    </div>
+    <div class="admin-field">
+      <label>Imagen URL</label>
+      <input
+        type="text"
+        name="image_url"
+        value="{{ product.image_url if product else '' }}"
+      />
+    </div>
+    <div class="admin-field admin-field--row">
+      <div>
+        <label>Precio</label>
+        <input
+          type="number"
+          step="0.01"
+          name="price"
+          value="{{ product.price if product else '' }}"
+          required
+        />
+      </div>
+      <div>
+        <label>Precio oferta</label>
+        <input
+          type="number"
+          step="0.01"
+          name="offer_price"
+          value="{{ product.offer_price if product else '' }}"
+        />
+      </div>
+    </div>
+    <div class="admin-field">
+      <label>Categoria</label>
+      <select name="category_id">
+        <option value="">Sin categoria</option>
+        {% for category in categories %}
+        <option
+          value="{{ category.id }}"
+          {%
+          if
+          product
+          and
+          product.category_id=""
+          ="category.id"
+          %}selected{%
+          endif
+          %}
+        >
+          {{ category.name }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="admin-field admin-field--inline">
+      <label>
+        <input
+          type="checkbox"
+          name="is_on_offer"
+          {%
+          if
+          product
+          and
+          product.is_on_offer
+          %}checked{%
+          endif
+          %}
+        />
+        En oferta
+      </label>
+      <label>
+        <input
+          type="checkbox"
+          name="is_active"
+          {%
+          if
+          not
+          product
+          or
+          product.is_active
+          %}checked{%
+          endif
+          %}
+        />
+        Activo
+      </label>
+    </div>
+    <div class="admin-actions">
+      <button type="submit" class="btn-solid">Guardar</button>
+      <a href="/admin/products" class="btn-link">Cancelar</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

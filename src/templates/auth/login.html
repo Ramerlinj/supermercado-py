@@ -8,13 +8,20 @@
       <p>Accede a tu cuenta para continuar</p>
     </div>
 
-    <form class="auth-form" method="post" action="#">
+    {% if error %}
+    <p class="auth-error">{{ error }}</p>
+    {% endif %}
+    <form class="auth-form" method="post" action="/login" data-auth-form>
+      <input type="hidden" name="next" value="{{ next_url or '' }}" />
       <div class="auth-field">
         <label for="login-email">Email</label>
         <input
           id="login-email"
           type="email"
+          name="email"
+          value="{{ email or '' }}"
           placeholder="tu@email.com"
+          autocomplete="email"
           required
         />
       </div>
@@ -23,7 +30,10 @@
         <input
           id="login-password"
           type="password"
+          name="password"
           placeholder="********"
+          autocomplete="current-password"
+          minlength="6"
           required
         />
       </div>

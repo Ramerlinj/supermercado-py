@@ -8,7 +8,7 @@
     --bg-dark: #F6F8F7;
     /* Blanco cálido / fondo limpio */
     --text-light: #1f2937;
-/* Gris oscuro suave (no negro puro) */
+    /* Gris oscuro suave (no negro puro) */
     --text-muted: #6b7280;
     /* Gris medio, lectura cómoda */
     --primary: #4caf50;
@@ -25,7 +25,16 @@ body {
     overflow-x: hidden;
 }
 
-.imagen-container img{
+.container {
+    width: min(1200px, 92vw);
+    margin: 0 auto;
+}
+
+.mt-4 {
+    margin-top: 24px;
+}
+
+.imagen-container img {
     width: 20px;
     height: 20px;
 }

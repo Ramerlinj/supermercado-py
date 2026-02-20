@@ -1,0 +1,194 @@
+.home-page {
+    display: flex;
+    flex-direction: column;
+    gap: 72px;
+}
+
+.home-values,
+.home-highlight,
+.home-deals,
+.home-testimonials,
+.home-newsletter {
+    padding: 0 0 12px;
+}
+
+.value-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 24px;
+}
+
+.value-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.08);
+}
+
+.value-card span.material-symbols-outlined {
+    font-size: 28px;
+    color: #1f7a45;
+}
+
+.value-card h3 {
+    margin: 12px 0 8px;
+    font-size: 1.05rem;
+}
+
+.value-card p {
+    margin: 0;
+    color: var(--text-muted);
+}
+
+.home-highlight .highlight-card {
+    background: linear-gradient(135deg, #1f7a45, #3fbf77);
+    color: #fff;
+    border-radius: 24px;
+    padding: 32px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    box-shadow: 0 20px 40px rgba(31, 122, 69, 0.25);
+}
+
+.highlight-card h2 {
+    font-family: "BBH Bogle", "Inter", sans-serif;
+    margin: 8px 0 12px;
+}
+
+.highlight-card .section-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.highlight-list {
+    display: grid;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.highlight-list span.material-symbols-outlined {
+    font-size: 20px;
+}
+
+.highlight-list div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.highlight-panel {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 18px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.highlight-panel h3 {
+    margin: 0 0 6px;
+}
+
+.highlight-panel .btn-solid {
+    background: #fff;
+    color: #1f7a45;
+}
+
+.home-deals .deal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+    margin-top: 24px;
+}
+
+.deal-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.08);
+    display: grid;
+    gap: 10px;
+}
+
+.deal-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #1f7a45;
+    color: #fff;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    width: max-content;
+}
+
+.testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+    margin-top: 24px;
+}
+
+.testimonial-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.08);
+    display: grid;
+    gap: 10px;
+}
+
+.testimonial-card p {
+    margin: 0;
+    font-style: italic;
+}
+
+.testimonial-card span {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.home-newsletter .newsletter-card {
+    background: #101b16;
+    color: #fff;
+    border-radius: 24px;
+    padding: 32px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.newsletter-form {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.newsletter-form input {
+    flex: 1 1 220px;
+    padding: 12px 16px;
+    border-radius: 999px;
+    border: none;
+}
+
+.newsletter-form .btn-solid {
+    background: #f6e58d;
+    color: #101b16;
+}
+
+@media (max-width: 960px) {
+
+    .home-highlight .highlight-card,
+    .home-newsletter .newsletter-card {
+        grid-template-columns: 1fr;
+    }
+
+    .newsletter-form {
+        justify-content: flex-start;
+    }
+}

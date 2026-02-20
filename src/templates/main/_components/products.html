@@ -1,42 +1,41 @@
 {% from 'macros/ui/badge.html' import badge %}
 
-<section class="products">
-  <div class="products-details">
-    <h2>Más Vendidos</h2>
-    <span>Productos frescos y de alta calidad</span>
-  </div>
-  <div class="products-viewmore">
-    <a href="/products">Ver más -></a>
+<section class="home-products" id="productos">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Seleccion curada</p>
+      <h2>Favoritos del barrio</h2>
+      <p class="section-subtitle">Productos frescos y listos para hoy</p>
+    </div>
+    <a class="text-link" href="/products">Explorar todo</a>
   </div>
 
-  <div class="products-list">
+  <div class="products-grid">
     {% for product in products.Products[:6] %}
-    <div class="products-items">
-      <div class="badge-category">
-        {{ badge(product.category, product.category) }}
+    <article class="product-card">
+      <div class="product-card__badges">
+        {{ badge(product.category, product.category) }} {% if
+        product.is_on_offer %} {{ badge('Oferta', 'oferta') }} {% endif %}
       </div>
-      <div class="badge-offer">
-        {% if product.is_on_offer %} {{ badge('Oferta', 'oferta') }} {% endif %}
-      </div>
-      <div class="products-image">
+      <div class="product-card__media">
         <img src="{{ product.image_url }}" alt="{{ product.name }}" />
       </div>
-      <h3>{{ product.name }}</h3>
-      <p>{{ product.cantity }}</p>
-      <div class="add-to-cart-container">
+      <div class="product-card__body">
+        <h3>{{ product.name }}</h3>
+        <p class="product-card__meta">{{ product.cantity }}</p>
+      </div>
+      <div class="product-card__footer">
         {% if product.is_on_offer%}
         <p class="price">${{ product.offer_price }}</p>
-        {% endif %}
-        {% if not product.is_on_offer %}
+        {% endif %} {% if not product.is_on_offer %}
         <p class="price">${{ product.price }}</p>
         {% endif %}
-        <button class="add-to-cart">+</button>
+        <button class="add-to-cart">Agregar</button>
       </div>
       {% if product.is_on_offer%}
       <p class="price--offer">${{ product.price }}</p>
       {% endif %}
-    </div>
-
+    </article>
     {% endfor %}
   </div>
 </section>

@@ -13,14 +13,11 @@
     padding: 14px;
     align-items: flex-end;
 }
-
 .products-filters__group {
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
-
-sdaasasdasdasdasdasdasdasdasdasdasdasdasdasasdasdasdasdasdasdasdasdasdasdasdasdasdaddasdasdasdasdasdasdsjdjdjjdjdjdjdjdjdjjdjdjdjdjjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdasdasdasdasdasdasd
 
 .products-filters__group--search {
     flex: 1 1 240px;

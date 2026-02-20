@@ -1,16 +1,11 @@
-{% extends 'layout/base.html' %}
-
-
-
-{% block head %}
+{% extends 'layout/base.html' %} {% block head %}
 <link rel="stylesheet" href="../../static/css/home/hero.css" />
 <link rel="stylesheet" href="../../static/css/home/products.css" />
-{% endblock %}
-
-{% block title %} Home {% endblock %}
-
-{% block content %}
-{% include "main/_components/hero.html" %}
-{% include "main/_components/products.html" %}
-
+<link rel="stylesheet" href="../../static/css/home/home.css" />
+{% endblock %} {% block title %} Home {% endblock %} {% block content %}
+<div class="home-page">
+  {% include "main/_components/hero.html" %} {% include
+  "main/_components/products.html" %} {% include "main/_components/extra.html"
+  %}
+</div>
 {% endblock %}

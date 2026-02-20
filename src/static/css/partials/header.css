@@ -1,5 +1,4 @@
-
-.header{
+.header {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
@@ -105,7 +104,7 @@
     transform: translateY(-1px);
 }
 
-.navbar-actions img{
+.navbar-actions img {
     width: 16px;
     height: 16px;
     cursor: pointer;

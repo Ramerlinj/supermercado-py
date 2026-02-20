@@ -1,0 +1,15 @@
+{% extends 'layout/base.html' %} {% block head %}
+<link rel="stylesheet" href="../../static/css/cart/cart.css" />
+{% endblock %} {% block title %} Pago completado {% endblock %} {% block content
+%}
+<section class="cart-success">
+  <div class="cart-success__card">
+    <h2>Pago recibido</h2>
+    <p>Tu pedido fue registrado correctamente.</p>
+    {% if order_id %}
+    <p>Orden: {{ order_id }}</p>
+    {% endif %}
+    <a class="btn-solid" href="/products">Seguir comprando</a>
+  </div>
+</section>
+{% endblock %}

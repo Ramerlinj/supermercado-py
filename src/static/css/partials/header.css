@@ -110,6 +110,26 @@
     cursor: pointer;
 }
 
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.navbar-actions form {
+    margin: 0;
+}
+
+.navbar-user {
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.btn-primary .material-symbols-outlined {
+    font-size: 1.1rem;
+}
+
 /* .navbar-actions{
     
 

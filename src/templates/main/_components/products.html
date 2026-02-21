@@ -12,7 +12,7 @@
 
   <div class="products-grid">
     {% for product in products.Products[:6] %}
-    <article class="product-card">
+    <article class="product-card product-card--home">
       <div class="product-card__badges">
         {{ badge(product.category, product.category) }} {% if
         product.is_on_offer %} {{ badge('Oferta', 'oferta') }} {% endif %}
@@ -21,20 +21,22 @@
         <img src="{{ product.image_url }}" alt="{{ product.name }}" />
       </div>
       <div class="product-card__body">
-        <h3>{{ product.name }}</h3>
+        <h3 class="product-card__title">{{ product.name }}</h3>
         <p class="product-card__meta">{{ product.cantity }}</p>
       </div>
       <div class="product-card__footer">
-        {% if product.is_on_offer%}
-        <p class="price">${{ product.offer_price }}</p>
-        {% endif %} {% if not product.is_on_offer %}
-        <p class="price">${{ product.price }}</p>
-        {% endif %}
-        <button class="add-to-cart">Agregar</button>
+        <div class="product-card__price">
+          {% if product.is_on_offer %}
+          <p class="price">${{ product.offer_price }}</p>
+          <p class="price--offer">${{ product.price }}</p>
+          {% else %}
+          <p class="price">${{ product.price }}</p>
+          {% endif %}
+        </div>
+        <button class="add-to-cart" data-product-id="{{ product.id }}">
+          Agregar
+        </button>
       </div>
-      {% if product.is_on_offer%}
-      <p class="price--offer">${{ product.price }}</p>
-      {% endif %}
     </article>
     {% endfor %}
   </div>

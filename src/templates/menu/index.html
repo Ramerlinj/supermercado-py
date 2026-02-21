@@ -6,8 +6,13 @@ from 'macros/ui/badge.html' import badge %}
 
 <section class="products products--page">
   <div class="products-details">
-    <h2>Productos</h2>
-    <span>Explora nuestro catalogo completo</span>
+    <div class="products-details__text">
+      <h2>Productos</h2>
+      <span>Explora nuestro catalogo completo</span>
+    </div>
+    <div class="products-details__summary">
+      <span>Seleccion local y fresca</span>
+    </div>
   </div>
 
   <div class="products-filters products-filters--compact" data-products-filters>
@@ -55,8 +60,8 @@ from 'macros/ui/badge.html' import badge %}
 
   <div class="products-list" data-products-list>
     {% for product in products.Products %}
-    <div
-      class="products-items"
+    <article
+      class="product-card product-card--menu"
       data-product-item
       data-name="{{ product.name }}"
       data-category="{{ product.category }}"
@@ -64,29 +69,31 @@ from 'macros/ui/badge.html' import badge %}
       data-price="{{ product.offer_price if product.is_on_offer else product.price }}"
       data-search="{{ product.name | lower }}"
     >
-      <div class="badge-category">
-        {{ badge(product.category, product.category) }}
+      <div class="product-card__badges">
+        {{ badge(product.category, product.category) }} {% if
+        product.is_on_offer %} {{ badge('Oferta', 'oferta') }} {% endif %}
       </div>
-      <div class="badge-offer">
-        {% if product.is_on_offer %} {{ badge('Oferta', 'oferta') }} {% endif %}
-      </div>
-      <div class="products-image">
+      <div class="product-card__media">
         <img src="{{ product.image_url }}" alt="{{ product.name }}" />
       </div>
-      <h3>{{ product.name }}</h3>
-      <p>{{ product.cantity }}</p>
-      <div class="add-to-cart-container">
-        {% if product.is_on_offer%}
-        <p class="price">${{ product.offer_price }}</p>
-        {% endif %} {% if not product.is_on_offer %}
-        <p class="price">${{ product.price }}</p>
-        {% endif %}
-        <button class="add-to-cart">+</button>
+      <div class="product-card__body">
+        <h3 class="product-card__title">{{ product.name }}</h3>
+        <p class="product-card__meta">{{ product.cantity }}</p>
       </div>
-      {% if product.is_on_offer%}
-      <p class="price--offer">${{ product.price }}</p>
-      {% endif %}
-    </div>
+      <div class="product-card__footer">
+        <div class="product-card__price">
+          {% if product.is_on_offer %}
+          <p class="price">${{ product.offer_price }}</p>
+          <p class="price--offer">${{ product.price }}</p>
+          {% else %}
+          <p class="price">${{ product.price }}</p>
+          {% endif %}
+        </div>
+        <button class="add-to-cart" data-product-id="{{ product.id }}">
+          Agregar
+        </button>
+      </div>
+    </article>
 
     {% endfor %}
   </div>

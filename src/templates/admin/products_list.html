@@ -1,0 +1,46 @@
+{% extends 'layout/base.html' %} {% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/admin/admin.css') }}"
+/>
+{% endblock %} {% block title %} Admin Productos {% endblock %} {% block content
+%}
+<section class="admin">
+  <div class="admin-header">
+    <div>
+      <h2>Productos</h2>
+      <p>Gestiona el catalogo disponible.</p>
+    </div>
+    <a class="btn-solid" href="/admin/products/new">Nuevo producto</a>
+  </div>
+
+  <div class="admin-table">
+    <div class="admin-table__row admin-table__row--head">
+      <span>Nombre</span>
+      <span>Categoria</span>
+      <span>Precio</span>
+      <span>Estado</span>
+      <span>Acciones</span>
+    </div>
+    {% for product in products %}
+    <div class="admin-table__row">
+      <span>{{ product.name }}</span>
+      <span>{{ product.category or 'Sin categoria' }}</span>
+      <span
+        >${{ product.offer_price if product.is_on_offer else product.price
+        }}</span
+      >
+      <span>{{ 'Activo' if product.is_active else 'Inactivo' }}</span>
+      <span class="admin-actions">
+        <a class="admin-link" href="/admin/products/{{ product.id }}/edit"
+          >Editar</a
+        >
+        <form method="post" action="/admin/products/{{ product.id }}/delete">
+          <button type="submit" class="admin-danger">Eliminar</button>
+        </form>
+      </span>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

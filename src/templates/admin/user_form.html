@@ -1,0 +1,95 @@
+{% extends 'layout/base.html' %} {% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/admin/admin.css') }}"
+/>
+{% endblock %} {% block title %} Admin Usuario {% endblock %} {% block content
+%}
+<section class="admin">
+  <div class="admin-header">
+    <div>
+      <h2>{{ 'Editar usuario' if user else 'Nuevo usuario' }}</h2>
+      <p>Completa los datos del usuario.</p>
+    </div>
+    <div class="admin-actions">
+      <a class="btn-link" href="/admin">Volver al admin</a>
+      <a class="btn-link" href="/admin/users">Retroceder</a>
+    </div>
+  </div>
+
+  {% if error %}
+  <p class="admin-error">{{ error }}</p>
+  {% endif %}
+
+  <form class="admin-form" method="post">
+    <div class="admin-field">
+      <label>Nombre completo</label>
+      <input
+        type="text"
+        name="full_name"
+        value="{{ user.full_name if user else '' }}"
+      />
+    </div>
+    <div class="admin-field">
+      <label>Email</label>
+      <input
+        type="email"
+        name="email"
+        value="{{ user.email if user else '' }}"
+        required
+      />
+    </div>
+    <div class="admin-field">
+      <label>{{ 'Nueva contrasena' if user else 'Contrasena' }}</label>
+      <input
+        type="password"
+        name="password"
+        {%
+        if
+        not
+        user
+        %}required{%
+        endif
+        %}
+      />
+    </div>
+    <div class="admin-field admin-field--inline">
+      <label>
+        <input
+          type="checkbox"
+          name="is_admin"
+          {%
+          if
+          user
+          and
+          user.is_admin
+          %}checked{%
+          endif
+          %}
+        />
+        Admin
+      </label>
+      <label>
+        <input
+          type="checkbox"
+          name="is_active"
+          {%
+          if
+          not
+          user
+          or
+          user.is_active
+          %}checked{%
+          endif
+          %}
+        />
+        Activo
+      </label>
+    </div>
+    <div class="admin-actions">
+      <button type="submit" class="btn-solid">Guardar</button>
+      <a href="/admin/users" class="btn-link">Cancelar</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

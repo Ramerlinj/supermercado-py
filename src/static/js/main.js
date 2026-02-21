@@ -55,3 +55,179 @@ const setupProductFilters = () => {
 };
 
 document.addEventListener('DOMContentLoaded', setupProductFilters);
+
+const setupCartActions = () => {
+	const buttons = Array.from(document.querySelectorAll('[data-product-id]'));
+	if (!buttons.length) {
+		return;
+	}
+
+	const cartCount = document.querySelector('[data-cart-count]');
+
+	const updateCount = (count) => {
+		if (!cartCount) {
+			return;
+		}
+		cartCount.textContent = String(count);
+	};
+
+	buttons.forEach((button) => {
+		button.addEventListener('click', async () => {
+			const productId = button.dataset.productId;
+			if (!productId) {
+				return;
+			}
+
+			try {
+				const response = await fetch('/cart/add', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ product_id: productId, quantity: 1 }),
+				});
+				if (!response.ok) {
+					return;
+				}
+				const data = await response.json();
+				if (data && typeof data.cart_count === 'number') {
+					updateCount(data.cart_count);
+				}
+			} catch (error) {
+				console.error('Cart error', error);
+			}
+		});
+	});
+};
+
+document.addEventListener('DOMContentLoaded', setupCartActions);
+
+const setupCartPage = () => {
+	const cartPage = document.querySelector('[data-cart-page]');
+	if (!cartPage) {
+		return;
+	}
+
+	const subtotalEl = cartPage.querySelector('[data-cart-subtotal]');
+	const totalEl = cartPage.querySelector('[data-cart-total]');
+	const cartCount = document.querySelector('[data-cart-count]');
+
+	const updateSummary = (subtotal) => {
+		if (subtotalEl) {
+			subtotalEl.textContent = `$${subtotal}`;
+		}
+		if (totalEl) {
+			totalEl.textContent = `$${subtotal}`;
+		}
+	};
+
+	const updateCartCount = (count) => {
+		if (cartCount) {
+			cartCount.textContent = String(count);
+		}
+	};
+
+	const syncItem = (itemEl, itemData) => {
+		const lineTotalEl = itemEl.querySelector('[data-line-total]');
+		if (lineTotalEl && itemData) {
+			lineTotalEl.textContent = `$${itemData.line_total}`;
+		}
+	};
+
+	const updateCart = async (productId, quantity, itemEl) => {
+		try {
+			const response = await fetch('/cart/update', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ product_id: productId, quantity }),
+			});
+			if (!response.ok) {
+				return;
+			}
+			const data = await response.json();
+			if (!data || data.status !== 'ok') {
+				return;
+			}
+			updateCartCount(data.cart_count);
+			updateSummary(data.subtotal);
+			const itemData = data.items ? data.items[productId] : null;
+			if (!itemData) {
+				itemEl.remove();
+			} else {
+				syncItem(itemEl, itemData);
+			}
+		} catch (error) {
+			console.error('Cart update error', error);
+		}
+	};
+
+	const removeItem = async (productId, itemEl) => {
+		try {
+			const response = await fetch('/cart/remove', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ product_id: productId }),
+			});
+			if (!response.ok) {
+				return;
+			}
+			const data = await response.json();
+			if (!data || data.status !== 'ok') {
+				return;
+			}
+			itemEl.remove();
+			updateCartCount(data.cart_count);
+			updateSummary(data.subtotal);
+			if (!data.cart_count) {
+				window.location.reload();
+			}
+		} catch (error) {
+			console.error('Cart remove error', error);
+		}
+	};
+
+	cartPage.querySelectorAll('[data-cart-item]').forEach((itemEl) => {
+		const productId = itemEl.dataset.productId;
+		const qtyInput = itemEl.querySelector('[data-cart-qty]');
+		const removeBtn = itemEl.querySelector('[data-cart-remove]');
+		const decreaseBtn = itemEl.querySelector('[data-qty-action="decrease"]');
+		const increaseBtn = itemEl.querySelector('[data-qty-action="increase"]');
+
+		if (qtyInput) {
+			qtyInput.addEventListener('change', () => {
+				const qty = Number(qtyInput.value || 1);
+				updateCart(productId, qty, itemEl);
+			});
+		}
+
+		if (decreaseBtn) {
+			decreaseBtn.addEventListener('click', () => {
+				const current = Number(qtyInput.value || 1);
+				const next = Math.max(1, current - 1);
+				qtyInput.value = next;
+				updateCart(productId, next, itemEl);
+			});
+		}
+
+		if (increaseBtn) {
+			increaseBtn.addEventListener('click', () => {
+				const current = Number(qtyInput.value || 1);
+				const next = current + 1;
+				qtyInput.value = next;
+				updateCart(productId, next, itemEl);
+			});
+		}
+
+		if (removeBtn) {
+			removeBtn.addEventListener('click', () => {
+				removeItem(productId, itemEl);
+			});
+		}
+	});
+};
+
+document.addEventListener('DOMContentLoaded', setupCartPage);

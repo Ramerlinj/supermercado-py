@@ -1,0 +1,68 @@
+{% extends 'layout/base.html' %} {% block head %}
+<link rel="stylesheet" href="../../static/css/cart/cart.css" />
+{% endblock %} {% block title %} Carrito {% endblock %} {% block content %}
+<section class="cart" data-cart-page>
+  <div class="cart-header">
+    <h2>Carrito</h2>
+    <p>Revisa tus productos antes de pagar.</p>
+  </div>
+
+  {% if items %}
+  <div class="cart-grid">
+    <div class="cart-items">
+      {% for item in items %}
+      <article class="cart-item" data-cart-item data-product-id="{{ item.id }}">
+        <img src="{{ item.image_url }}" alt="{{ item.name }}" />
+        <div class="cart-item__info">
+          <h3>{{ item.name }}</h3>
+          <div class="cart-qty">
+            <button type="button" data-qty-action="decrease">-</button>
+            <input
+              type="number"
+              min="1"
+              value="{{ item.quantity }}"
+              data-cart-qty
+            />
+            <button type="button" data-qty-action="increase">+</button>
+          </div>
+          <span>${{ item.unit_price }}</span>
+        </div>
+        <div class="cart-item__total">
+          <strong data-line-total>${{ item.line_total }}</strong>
+          <button type="button" class="btn-remove" data-cart-remove>
+            Quitar
+          </button>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    <aside class="cart-summary">
+      <h3>Resumen</h3>
+      <div class="cart-summary__row">
+        <span>Subtotal</span>
+        <span data-cart-subtotal>${{ subtotal }}</span>
+      </div>
+      <div class="cart-summary__row">
+        <span>Envio</span>
+        <span>$0</span>
+      </div>
+      <div class="cart-summary__total">
+        <span>Total</span>
+        <span data-cart-total>${{ subtotal }}</span>
+      </div>
+      <form method="post" action="/checkout">
+        <button type="submit" class="btn-solid">Pagar</button>
+      </form>
+    </aside>
+  </div>
+  {% else %}
+  <div class="cart-empty">
+    <span class="material-symbols-outlined cart-empty__icon">shopping_bag</span>
+    <h3>Tu carrito esta vacio</h3>
+    <p>Explora productos frescos y arma tu compra en minutos.</p>
+    <a class="btn-solid" href="/products">Ver productos</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

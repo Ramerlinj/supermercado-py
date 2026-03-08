@@ -3,6 +3,7 @@ import json
 import bcrypt
 import re
 import psycopg2
+from uuid import UUID
 from psycopg2.extras import RealDictCursor
 from flask import Flask, render_template, request, redirect, url_for, session
 from middleware.admin import build_admin_required, get_admin_role_id, is_admin as is_admin_user
@@ -10,7 +11,7 @@ from dotenv import load_dotenv
 from decimal import Decimal
 # from livereload import Server
 
-load_dotenv()
+load_dotenv(override=True)
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'dev-secret-key')
@@ -32,30 +33,93 @@ def _normalize_cantity(description):
     return description
 
 
+def _get_products_columns(cur):
+    cur.execute(
+        """
+        select column_name
+        from information_schema.columns
+        where table_schema = 'public' and table_name = 'products'
+        """
+    )
+    return {row.get('column_name') for row in cur.fetchall()}
+
+
+def _normalize_product_id(value):
+    if value is None:
+        return None
+    try:
+        return str(UUID(str(value)))
+    except (TypeError, ValueError, AttributeError):
+        return None
+
+
 def load_products():
-        with get_db_connection() as conn:
-                with conn.cursor() as cur:
-                        cur.execute(
-                                """
-                                select
-                                    p.id,
-                                    p.name,
-                                    p.description,
-                                    p.price,
-                                    p.image_url,
-                                    p.is_on_offer,
-                                    p.offer_price,
-                                    c.name as category
-                                from public.products p
-                                left join public.product_categories pc
-                                    on pc.product_id = p.id
-                                left join public.categories c
-                                    on c.id = pc.category_id
-                                where p.is_active = true
-                                order by p.created_at desc, p.name asc
-                                """
-                        )
-                        rows = cur.fetchall()
+    with get_db_connection() as conn:
+        with conn.cursor() as cur:
+            product_columns = _get_products_columns(cur)
+
+            description_sql = 'p.description' if 'description' in product_columns else 'null::text as description'
+            price_sql = 'p.price' if 'price' in product_columns else '0::numeric as price'
+            image_url_sql = 'p.image_url' if 'image_url' in product_columns else 'null::text as image_url'
+            is_on_offer_sql = 'p.is_on_offer' if 'is_on_offer' in product_columns else 'false as is_on_offer'
+            offer_price_sql = 'p.offer_price' if 'offer_price' in product_columns else '0::numeric as offer_price'
+            where_active_sql = 'where p.is_active = true' if 'is_active' in product_columns else ''
+            order_by_sql = 'order by p.created_at desc, p.name asc' if 'created_at' in product_columns else 'order by p.name asc'
+
+            cur.execute(
+                """
+                select
+                    to_regclass('public.product_categories') is not null as has_product_categories,
+                    to_regclass('public.categories') is not null as has_categories
+                """
+            )
+            schema_flags = cur.fetchone() or {}
+
+            has_category_tables = bool(
+                schema_flags.get('has_product_categories')
+                and schema_flags.get('has_categories')
+            )
+
+            if has_category_tables:
+                cur.execute(
+                    f"""
+                    select
+                        p.id,
+                        p.name,
+                        {description_sql},
+                        {price_sql},
+                        {image_url_sql},
+                        {is_on_offer_sql},
+                        {offer_price_sql},
+                        c.name as category
+                    from public.products p
+                    left join public.product_categories pc
+                        on pc.product_id = p.id
+                    left join public.categories c
+                        on c.id = pc.category_id
+                    {where_active_sql}
+                    {order_by_sql}
+                    """
+                )
+            else:
+                cur.execute(
+                    f"""
+                    select
+                        p.id,
+                        p.name,
+                        {description_sql},
+                        {price_sql},
+                        {image_url_sql},
+                        {is_on_offer_sql},
+                        {offer_price_sql},
+                        null::text as category
+                    from public.products p
+                    {where_active_sql}
+                    {order_by_sql}
+                    """
+                )
+
+            rows = cur.fetchall()
 
         products = []
         for row in rows:
@@ -106,23 +170,36 @@ def _save_cart(cart):
 
 
 def _fetch_products_by_ids(product_ids):
-    if not product_ids:
+    normalized_ids = [
+        normalized
+        for normalized in (_normalize_product_id(product_id) for product_id in product_ids)
+        if normalized
+    ]
+
+    if not normalized_ids:
         return []
     with get_db_connection() as conn:
         with conn.cursor() as cur:
+            product_columns = _get_products_columns(cur)
+
+            price_sql = 'p.price' if 'price' in product_columns else '0::numeric as price'
+            image_url_sql = 'p.image_url' if 'image_url' in product_columns else 'null::text as image_url'
+            is_on_offer_sql = 'p.is_on_offer' if 'is_on_offer' in product_columns else 'false as is_on_offer'
+            offer_price_sql = 'p.offer_price' if 'offer_price' in product_columns else '0::numeric as offer_price'
+
             cur.execute(
-                """
+                f"""
                 select
                   p.id,
                   p.name,
-                  p.price,
-                  p.image_url,
-                  p.is_on_offer,
-                  p.offer_price
+                  {price_sql},
+                  {image_url_sql},
+                  {is_on_offer_sql},
+                  {offer_price_sql}
                 from public.products p
-                where p.id = any(%s::uuid[])
+                                where p.id::text = any(%s::text[])
                 """,
-                (product_ids,),
+                                (normalized_ids,),
             )
             return cur.fetchall()
 
@@ -339,11 +416,13 @@ def cart():
 @app.route('/cart/add', methods=['POST'])
 def cart_add():
     data = request.get_json(silent=True) or {}
-    product_id = data.get('product_id') or request.form.get('product_id')
+    raw_product_id = data.get('product_id') or request.form.get('product_id')
     quantity = data.get('quantity') or request.form.get('quantity') or 1
 
+    product_id = _normalize_product_id(raw_product_id)
     if not product_id:
-        return {'status': 'error', 'message': 'Missing product_id'}, 400
+        message = 'Missing product_id' if not raw_product_id else 'Invalid product_id'
+        return {'status': 'error', 'message': message}, 400
 
     try:
         quantity = int(quantity)
@@ -372,11 +451,13 @@ def cart_add():
 @app.route('/cart/update', methods=['POST'])
 def cart_update():
     data = request.get_json(silent=True) or {}
-    product_id = data.get('product_id') or request.form.get('product_id')
+    raw_product_id = data.get('product_id') or request.form.get('product_id')
     quantity = data.get('quantity') or request.form.get('quantity')
 
+    product_id = _normalize_product_id(raw_product_id)
     if not product_id:
-        return {'status': 'error', 'message': 'Missing product_id'}, 400
+        message = 'Missing product_id' if not raw_product_id else 'Invalid product_id'
+        return {'status': 'error', 'message': message}, 400
 
     try:
         quantity = int(quantity)
@@ -405,10 +486,12 @@ def cart_update():
 @app.route('/cart/remove', methods=['POST'])
 def cart_remove():
     data = request.get_json(silent=True) or {}
-    product_id = data.get('product_id') or request.form.get('product_id')
+    raw_product_id = data.get('product_id') or request.form.get('product_id')
 
+    product_id = _normalize_product_id(raw_product_id)
     if not product_id:
-        return {'status': 'error', 'message': 'Missing product_id'}, 400
+        message = 'Missing product_id' if not raw_product_id else 'Invalid product_id'
+        return {'status': 'error', 'message': message}, 400
 
     cart_data = _get_cart()
     cart_data.pop(product_id, None)
@@ -881,6 +964,5 @@ def health_db():
         'result': row.get('ok') if row else None,
     }
 
-if __name__ == '__main__':
-    app.run(debug=True)
-    
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)

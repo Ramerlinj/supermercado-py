@@ -3,7 +3,6 @@ import json
 import bcrypt
 import re
 import psycopg2
-from uuid import UUID
 from psycopg2.extras import RealDictCursor
 from flask import Flask, render_template, request, redirect, url_for, session
 from middleware.admin import build_admin_required, get_admin_role_id, is_admin as is_admin_user
@@ -47,10 +46,11 @@ def _get_products_columns(cur):
 def _normalize_product_id(value):
     if value is None:
         return None
-    try:
-        return str(UUID(str(value)))
-    except (TypeError, ValueError, AttributeError):
+    normalized = str(value).strip()
+    if not normalized:
         return None
+    # Keep IDs as text to support both UUID and non-UUID PK types.
+    return normalized
 
 
 def load_products():
